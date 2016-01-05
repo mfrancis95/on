@@ -14,13 +14,12 @@ parser.add_argument("command", nargs = "+")
 args = parser.parse_args()
 
 call = subprocess.Popen if args.a else subprocess.call
-value = args.value
+value = args.value.strip()
 if args.ne:
-    compare = lambda line: line != value
+    compare = lambda line: line.strip() != value
 else:
-    compare = lambda line: line == value
+    compare = lambda line: line.strip() == value
 process = " ".join(args.command)
 
-for line in sys.stdin:
-    if compare(line.rstrip()):
-        call(process, shell = True)
+for line in filter(compare, sys.stdin):
+    call(process, shell = True)
