@@ -11,6 +11,7 @@ group.add_argument("-ne", action = "store_true")
 
 parser.add_argument("value")
 parser.add_argument("command", nargs = "+")
+parser.add_argument("-q", action = "store_true")
 args = parser.parse_args()
 
 call = subprocess.Popen if args.a else subprocess.call
@@ -20,6 +21,9 @@ if args.ne:
 else:
     compare = lambda line: line.strip() == value
 process = " ".join(args.command)
+quit = args.q
 
 for line in filter(compare, sys.stdin):
     call(process, shell = True)
+    if quit:
+        break
