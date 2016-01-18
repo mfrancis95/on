@@ -3,7 +3,7 @@ import sys
 import subprocess
 
 parser = ArgumentParser("on")
-parser.add_argument("-a", action = "store_true")
+parser.add_argument("-a", "--async", action = "store_true")
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument("-eq", action = "store_true")
@@ -14,7 +14,7 @@ parser.add_argument("command", nargs = "+")
 parser.add_argument("-q", action = "store_true")
 args = parser.parse_args()
 
-call = subprocess.Popen if args.a else subprocess.call
+call = subprocess.Popen if args.async else subprocess.call
 value = args.value.strip()
 if args.ne:
     compare = lambda line: line.strip() != value
