@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+from re import match
 import subprocess
 from itertools import filterfalse
 import sys
@@ -6,6 +7,7 @@ import sys
 operators = {
     "eq": lambda line: line.strip() == value,
     "ne": lambda line: line.strip() != value,
+    "like": lambda line: match(value, line.strip()),
     "gt": lambda line: int(line) > value,
     "lt": lambda line: int(line) < value,
     "gte": lambda line: int(line) >= value,
@@ -25,7 +27,7 @@ call = subprocess.Popen if args["async"] else subprocess.call
 filter = filterfalse if args["not"] else filter
 value = args["value"].strip()
 operator = args["operator"]
-if operator not in ("eq", "ne"):
+if operator not in ("eq", "ne", "like"):
     value = int(value)
 operator = operators[operator]
 process = " ".join(args["command"])
