@@ -4,9 +4,15 @@ import subprocess
 from itertools import filterfalse
 import sys
 
+def eq(line):
+    try:
+        return float(line) == float(value)
+    except ValueError:
+        return line == value
+
 operators = {
-    "eq": lambda line: line == value,
-    "ne": lambda line: line != value,
+    "eq": eq,
+    "ne": lambda line: not eq(line),
     "like": lambda line: match(value, line),
     "gt": lambda line: float(line) > value,
     "lt": lambda line: float(line) < value,
